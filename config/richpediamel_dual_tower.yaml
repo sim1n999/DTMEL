@@ -1,0 +1,80 @@
+run_name: RichpediaMEL_DualTower
+seed: 42
+pretrained_model: 'openai/clip-vit-base-patch32'
+lr: 1e-5
+weight_decay: 0.01
+warmup_steps: 1000
+version: "dual_tower_v1"
+
+data:
+  num_entity: 160933
+  kb_img_folder: 'data/RichpediaMEL/kb_image'
+  mention_img_folder: 'data/RichpediaMEL/mention_images'
+  qid2id: 'data/RichpediaMEL/qid2id.json'
+  entity: 'data/RichpediaMEL/kb_entity.json'
+  train_file: 'data/RichpediaMEL/RichpediaMEL_train.json'
+  dev_file: 'data/RichpediaMEL/RichpediaMEL_dev.json'
+  test_file: 'data/RichpediaMEL/RichpediaMEL_test.json'
+
+  batch_size: 32
+  num_workers: 8
+  text_max_length: 77
+  visual_patch_length: 50
+
+  eval_chunk_size: 5000
+  eval_batch_size: 16
+  embed_update_batch_size: 256
+
+  in_batch_negatives: True
+  hard_negatives_per_sample: 3
+  use_kg_negatives: False
+
+model:
+  text_encoder_dim: 512
+  image_encoder_dim: 768
+  emd_image_encoder_dim: 512
+  unified_dim: 512
+
+
+  num_experts: 4
+  top_k_experts: 2
+  expert_hidden_dim: 512
+
+  num_attention_heads: 8
+  attention_dropout: 0.1
+
+  use_senet: True
+  senet_reduction: 16
+
+  text_dropout: 0.1
+  image_dropout: 0.1
+  fusion_dropout: 0.2
+
+  modal_dropout_prob: 0.3
+
+  temperature: 0.05
+
+  use_memory_bank: False
+  memory_bank_size: 0
+  memory_bank_warmup_steps: 0
+
+  share_tower_params: True
+
+  bidirectional_loss: True
+  mention_to_entity_weight: 1.2
+  entity_to_mention_weight: 0.7
+
+  load_balance_weight: 0.05
+  channel_balance_weight: 0.2
+  diversity_weight: 0.1
+  expert_dropout_rate: 0.5
+
+trainer:
+  accelerator: 'gpu'
+  devices: 1
+  max_epochs: 30
+  num_sanity_val_steps: 0
+  check_val_every_n_epoch: 1
+  log_every_n_steps: 50
+  gradient_clip_val: 1.0
+  accumulate_grad_batches: 1

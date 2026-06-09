@@ -1,0 +1,7 @@
+torch
+pytorch-lightning
+transformers
+omegaconf
+numpy
+pillow
+tqdm

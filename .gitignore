@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.pkl
+
+data/
+runs/
+logs/
+result/
+results/
+checkpoints/
+*.ckpt
+
+.env
+.venv/
+venv/
